@@ -2,19 +2,72 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
+import java.awt.Image;
+import java.io.*;
+import java.net.*;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import org.json.*;
 /**
  *
  * @author HP
  */
 public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
-
+    private static final String API_KEY = "dd07a5aaf16a778da36817495e8a09b2";
     /**
      * Creates new form CekCuacaSederhanaFrame
      */
     public CekCuacaSederhanaFrame() {
-        initComponents();
+    initComponents();
+    
+    // Opsional: isi default
+    TxtKota.setText("");
+    LblCuaca.setText("Cuaca: []");
+    LblSuhu.setText("Suhu: []");
+    LblKelembapan.setText("Kelembapan: []");
+    LblKondisi.setText("Kondisi:");
     }
+
+    
+    private JSONObject getWeatherData(String city) throws IOException {
+        String urlString = String.format(
+            "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=metric&lang=id",
+            URLEncoder.encode(city, "UTF-8"), API_KEY
+        );
+        URL url = new URL(urlString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        StringBuilder response = new StringBuilder();
+        String line;
+        while ((line = in.readLine()) != null) {
+            response.append(line);
+        }
+        in.close();
+
+        return new JSONObject(response.toString());
+    }
+    
+    private void updateWeatherIcon(String kondisi) {
+        String iconPath = "/img/default.png";
+
+    if (kondisi.contains("cerah")) iconPath = "/img/cerah.png";
+    else if (kondisi.contains("awan")) iconPath = "/img/berawan.png";
+    else if (kondisi.contains("hujan")) iconPath = "/img/hujan.png";
+    else if (kondisi.contains("kabut")) iconPath = "/img/kabut.png";
+
+    // Pastikan gambar ditemukan
+    java.net.URL imgURL = getClass().getResource(iconPath);
+    if (imgURL != null) {
+        ImageIcon icon = new ImageIcon(imgURL);
+        // Skala ulang agar pas di area label
+        Image scaledImage = icon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        lblGambar.setIcon(new ImageIcon(scaledImage));
+    } else {
+        System.err.println("Gagal menemukan ikon: " + iconPath);
+    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,9 +80,9 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         LblJudul = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        panelInfo = new javax.swing.JPanel();
         LblCari = new javax.swing.JLabel();
-        TxtCari = new javax.swing.JTextField();
+        TxtKota = new javax.swing.JTextField();
         BtnCek = new javax.swing.JButton();
         CbxLokasi = new javax.swing.JComboBox<>();
         LblCuaca = new javax.swing.JLabel();
@@ -39,7 +92,8 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
         BtnSimpan = new javax.swing.JButton();
         BtnSimpanData = new javax.swing.JButton();
         BtnMuatData = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        lblGambar = new javax.swing.JLabel();
+        panelTabel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TblCuaca = new javax.swing.JTable();
 
@@ -53,7 +107,7 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addGap(19, 19, 19)
                 .addComponent(LblJudul)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -68,13 +122,18 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
         LblCari.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
         LblCari.setText("Cari Kota:");
 
-        TxtCari.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        TxtKota.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
 
         BtnCek.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
         BtnCek.setText("Cek");
+        BtnCek.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCekActionPerformed(evt);
+            }
+        });
 
         LblCuaca.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
-        LblCuaca.setText("Cuaca: [ ]");
+        LblCuaca.setText("Cuaca: ");
 
         LblSuhu.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
         LblSuhu.setText("Suhu: [ ]");
@@ -83,57 +142,71 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
         LblKelembapan.setText("Kelembapan: [ ]");
 
         LblKondisi.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
-        LblKondisi.setText("Kondisi: [ ]");
+        LblKondisi.setText("Kondisi:");
 
         BtnSimpan.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
         BtnSimpan.setText("Simpan");
 
         BtnSimpanData.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
         BtnSimpanData.setText("Simpan Data");
+        BtnSimpanData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnSimpanDataActionPerformed(evt);
+            }
+        });
 
         BtnMuatData.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
         BtnMuatData.setText("Muat Data");
+        BtnMuatData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnMuatDataActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        lblGambar.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+
+        javax.swing.GroupLayout panelInfoLayout = new javax.swing.GroupLayout(panelInfo);
+        panelInfo.setLayout(panelInfoLayout);
+        panelInfoLayout.setHorizontalGroup(
+            panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelInfoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(TxtCari, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(LblCari)
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BtnCek, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(CbxLokasi, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BtnSimpan))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelInfoLayout.createSequentialGroup()
+                        .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoLayout.createSequentialGroup()
+                                .addComponent(CbxLokasi, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(BtnSimpan))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(BtnMuatData)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(BtnSimpanData))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoLayout.createSequentialGroup()
+                                .addComponent(TxtKota)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(BtnCek, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
+                    .addGroup(panelInfoLayout.createSequentialGroup()
+                        .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(LblCari)
                             .addComponent(LblCuaca)
                             .addComponent(LblSuhu)
                             .addComponent(LblKelembapan)
-                            .addComponent(LblKondisi))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(BtnMuatData)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BtnSimpanData)))
-                .addContainerGap())
+                            .addGroup(panelInfoLayout.createSequentialGroup()
+                                .addComponent(LblKondisi)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblGambar)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+        panelInfoLayout.setVerticalGroup(
+            panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoLayout.createSequentialGroup()
                 .addComponent(LblCari)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(TxtCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TxtKota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BtnCek))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LblCuaca)
@@ -142,33 +215,31 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LblKelembapan)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(LblKondisi)
+                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LblKondisi)
+                    .addComponent(lblGambar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnSimpan)
                     .addComponent(CbxLokasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnSimpanData)
                     .addComponent(BtnMuatData))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         TblCuaca.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
         TblCuaca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "Area", "Cuaca", "Suhu", "Kelembapan", "Bujur", "Lintang"
+                "Area", "Cuaca", "Suhu", "Kelembapan"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -177,20 +248,17 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(TblCuaca);
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelTabelLayout = new javax.swing.GroupLayout(panelTabel);
+        panelTabel.setLayout(panelTabelLayout);
+        panelTabelLayout.setHorizontalGroup(
+            panelTabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelTabelLayout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+        panelTabelLayout.setVerticalGroup(
+            panelTabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -198,25 +266,99 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelTabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelTabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void BtnCekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCekActionPerformed
+            String city = TxtKota.getText().trim();
+    if (city.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Masukkan nama kota terlebih dahulu!");
+        return;
+    }
+
+    try {
+        JSONObject data = getWeatherData(city);
+        JSONObject main = data.getJSONObject("main");
+        JSONObject weather = data.getJSONArray("weather").getJSONObject(0);
+
+        String kondisi = weather.getString("description");
+        double suhu = main.getDouble("temp");
+        int kelembapan = main.getInt("humidity");
+
+        // Tampilkan hasil ke label
+        LblCuaca.setText("Cuaca: " + kondisi);
+        LblSuhu.setText("Suhu: " + suhu + "°C");
+        LblKelembapan.setText("Kelembapan: " + kelembapan + "%");
+
+        // Menambahkan ke tabel (opsional)
+        javax.swing.table.DefaultTableModel model = 
+            (javax.swing.table.DefaultTableModel) TblCuaca.getModel();
+        model.addRow(new Object[]{city, kondisi, suhu + "°C", kelembapan + "%"});
+        
+        updateWeatherIcon(kondisi);
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal mengambil data: " + e.getMessage());
+    }
+    }//GEN-LAST:event_BtnCekActionPerformed
+
+    private void BtnSimpanDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanDataActionPerformed
+        simpanDataKeCSV();   
+    }//GEN-LAST:event_BtnSimpanDataActionPerformed
+
+    private void BtnMuatDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnMuatDataActionPerformed
+        muatDataDariCSV();
+    }//GEN-LAST:event_BtnMuatDataActionPerformed
+    
+    private void simpanDataKeCSV() {
+    try (PrintWriter writer = new PrintWriter(new File("data_cuaca.csv"))) {
+        javax.swing.table.DefaultTableModel model = 
+            (javax.swing.table.DefaultTableModel) TblCuaca.getModel();
+
+        for (int i = 0; i < model.getRowCount(); i++) {
+            writer.println(
+                model.getValueAt(i, 0) + "," +
+                model.getValueAt(i, 1) + "," +
+                model.getValueAt(i, 2) + "," +
+                model.getValueAt(i, 3)
+            );
+        }
+        JOptionPane.showMessageDialog(this, "Data cuaca berhasil disimpan!");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal menyimpan: " + e.getMessage());
+    }
+}
+
+private void muatDataDariCSV() {
+    try (BufferedReader br = new BufferedReader(new FileReader("data_cuaca.csv"))) {
+        javax.swing.table.DefaultTableModel model =
+            (javax.swing.table.DefaultTableModel) TblCuaca.getModel();
+        model.setRowCount(0); // Hapus data lama
+
+        String line;
+        while ((line = br.readLine()) != null) {
+            model.addRow(line.split(","));
+        }
+        JOptionPane.showMessageDialog(this, "Data berhasil dimuat!");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Gagal memuat: " + e.getMessage());
+    }
+}
     /**
      * @param args the command line arguments
      */
@@ -265,10 +407,11 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
     private javax.swing.JLabel LblKondisi;
     private javax.swing.JLabel LblSuhu;
     private javax.swing.JTable TblCuaca;
-    private javax.swing.JTextField TxtCari;
+    private javax.swing.JTextField TxtKota;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblGambar;
+    private javax.swing.JPanel panelInfo;
+    private javax.swing.JPanel panelTabel;
     // End of variables declaration//GEN-END:variables
 }
