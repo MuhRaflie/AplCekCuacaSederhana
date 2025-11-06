@@ -30,14 +30,18 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         LblCari = new javax.swing.JLabel();
         TxtCari = new javax.swing.JTextField();
-        BtnCari = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        LblLokasi = new javax.swing.JLabel();
+        BtnCek = new javax.swing.JButton();
+        CbxLokasi = new javax.swing.JComboBox<>();
+        LblCuaca = new javax.swing.JLabel();
+        LblSuhu = new javax.swing.JLabel();
+        LblKelembapan = new javax.swing.JLabel();
+        LblKondisi = new javax.swing.JLabel();
+        BtnSimpan = new javax.swing.JButton();
+        BtnSimpanData = new javax.swing.JButton();
+        BtnMuatData = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        LblUpdate = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TblCuaca = new javax.swing.JTable();
-        LblSumber = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,31 +70,61 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
 
         TxtCari.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
 
-        BtnCari.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
-        BtnCari.setText("Cari");
+        BtnCek.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        BtnCek.setText("Cek");
 
-        LblLokasi.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
-        LblLokasi.setText("Pilih Lokasi:");
+        LblCuaca.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        LblCuaca.setText("Cuaca: [ ]");
+
+        LblSuhu.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        LblSuhu.setText("Suhu: [ ]");
+
+        LblKelembapan.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        LblKelembapan.setText("Kelembapan: [ ]");
+
+        LblKondisi.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        LblKondisi.setText("Kondisi: [ ]");
+
+        BtnSimpan.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        BtnSimpan.setText("Simpan");
+
+        BtnSimpanData.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        BtnSimpanData.setText("Simpan Data");
+
+        BtnMuatData.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        BtnMuatData.setText("Muat Data");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(LblLokasi)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, 0, 129, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(TxtCari, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(LblCari)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BtnCari, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(BtnCek, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(CbxLokasi, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BtnSimpan))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(LblCuaca)
+                            .addComponent(LblSuhu)
+                            .addComponent(LblKelembapan)
+                            .addComponent(LblKondisi))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(BtnMuatData)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BtnSimpanData)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -100,16 +134,25 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TxtCari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BtnCari))
+                    .addComponent(BtnCek))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(LblCuaca)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(LblSuhu)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(LblKelembapan)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(LblKondisi)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(LblLokasi))
+                    .addComponent(BtnSimpan)
+                    .addComponent(CbxLokasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BtnSimpanData)
+                    .addComponent(BtnMuatData))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        LblUpdate.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
-        LblUpdate.setText("Last Updated: <waktu>");
 
         TblCuaca.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
         TblCuaca.setModel(new javax.swing.table.DefaultTableModel(
@@ -134,9 +177,6 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(TblCuaca);
 
-        LblSumber.setFont(new java.awt.Font("Milky Nice", 0, 12)); // NOI18N
-        LblSumber.setText("Data Sumber: BMKG (Badan Meteorologi, Klimatologi, dan Geofisika)");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -144,22 +184,12 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(LblUpdate)
-                    .addComponent(LblSumber))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(LblUpdate)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(LblSumber)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -223,15 +253,19 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnCari;
+    private javax.swing.JButton BtnCek;
+    private javax.swing.JButton BtnMuatData;
+    private javax.swing.JButton BtnSimpan;
+    private javax.swing.JButton BtnSimpanData;
+    private javax.swing.JComboBox<String> CbxLokasi;
     private javax.swing.JLabel LblCari;
+    private javax.swing.JLabel LblCuaca;
     private javax.swing.JLabel LblJudul;
-    private javax.swing.JLabel LblLokasi;
-    private javax.swing.JLabel LblSumber;
-    private javax.swing.JLabel LblUpdate;
+    private javax.swing.JLabel LblKelembapan;
+    private javax.swing.JLabel LblKondisi;
+    private javax.swing.JLabel LblSuhu;
     private javax.swing.JTable TblCuaca;
     private javax.swing.JTextField TxtCari;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

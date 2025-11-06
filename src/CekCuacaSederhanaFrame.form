@@ -84,15 +84,10 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="LblLokasi" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jComboBox1" pref="129" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="TxtCari" alignment="0" max="32767" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
@@ -101,7 +96,27 @@
                               </Group>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="BtnCari" min="-2" pref="63" max="-2" attributes="0"/>
+                          <Component id="BtnCek" min="-2" pref="63" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Component id="CbxLokasi" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="BtnSimpan" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="LblCuaca" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="LblSuhu" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="LblKelembapan" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="LblKondisi" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="BtnMuatData" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="BtnSimpanData" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -115,12 +130,25 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="TxtCari" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="BtnCari" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="BtnCek" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="LblCuaca" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="LblSuhu" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="LblKelembapan" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="LblKondisi" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="BtnSimpan" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="CbxLokasi" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jComboBox1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="LblLokasi" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="BtnSimpanData" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="BtnMuatData" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -143,15 +171,15 @@
             </Property>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="BtnCari">
+        <Component class="javax.swing.JButton" name="BtnCek">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Milky Nice" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Cari"/>
+            <Property name="text" type="java.lang.String" value="Cek"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox1">
+        <Component class="javax.swing.JComboBox" name="CbxLokasi">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
@@ -161,12 +189,60 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JLabel" name="LblLokasi">
+        <Component class="javax.swing.JLabel" name="LblCuaca">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Milky Nice" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Pilih Lokasi:"/>
+            <Property name="text" type="java.lang.String" value="Cuaca: [ ]"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="LblSuhu">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Milky Nice" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Suhu: [ ]"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="LblKelembapan">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Milky Nice" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Kelembapan: [ ]"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="LblKondisi">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Milky Nice" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Kondisi: [ ]"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="BtnSimpan">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Milky Nice" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Simpan"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="BtnSimpanData">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Milky Nice" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Simpan Data"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="BtnMuatData">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Milky Nice" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Muat Data"/>
           </Properties>
         </Component>
       </SubComponents>
@@ -180,39 +256,19 @@
                   <Component id="jScrollPane2" min="-2" pref="524" max="-2" attributes="0"/>
                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
-              <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="LblUpdate" min="-2" max="-2" attributes="0"/>
-                      <Component id="LblSumber" alignment="0" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="32767" attributes="0"/>
-              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="LblUpdate" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="8" max="32767" attributes="0"/>
-                  <Component id="jScrollPane2" min="-2" pref="265" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="LblSumber" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="jScrollPane2" min="-2" pref="286" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="LblUpdate">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Milky Nice" size="14" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Last Updated: &lt;waktu&gt;"/>
-          </Properties>
-        </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane2">
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -239,14 +295,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="LblSumber">
-          <Properties>
-            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-              <Font name="Milky Nice" size="12" style="0"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Data Sumber: BMKG (Badan Meteorologi, Klimatologi, dan Geofisika)"/>
-          </Properties>
-        </Component>
       </SubComponents>
     </Container>
   </SubComponents>
