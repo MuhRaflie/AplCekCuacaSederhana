@@ -20,15 +20,22 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
     public CekCuacaSederhanaFrame() {
     initComponents();
     
-    // Opsional: isi default
+    // 🔹 Muat daftar kota favorit dari file
+    muatKotaFavorit();
+
+    // 🔹 Tambahkan listener: saat user memilih dari combo box, isi ke TxtKota
+    CbxLokasi.addActionListener(e -> {
+        String kotaDipilih = (String) CbxLokasi.getSelectedItem();
+        if (kotaDipilih != null && !kotaDipilih.equals("Pilih Kota")) {
+            TxtKota.setText(kotaDipilih);
+        }
+    });
     TxtKota.setText("");
     LblCuaca.setText("Cuaca: []");
     LblSuhu.setText("Suhu: []");
     LblKelembapan.setText("Kelembapan: []");
     LblKondisi.setText("Kondisi:");
     }
-
-    
     private JSONObject getWeatherData(String city) throws IOException {
         String urlString = String.format(
             "https://api.openweathermap.org/data/2.5/weather?q=%s&appid=%s&units=metric&lang=id",
@@ -78,9 +85,9 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        PanelJudul = new javax.swing.JPanel();
         LblJudul = new javax.swing.JLabel();
-        panelInfo = new javax.swing.JPanel();
+        PanelInfo = new javax.swing.JPanel();
         LblCari = new javax.swing.JLabel();
         TxtKota = new javax.swing.JTextField();
         BtnCek = new javax.swing.JButton();
@@ -89,37 +96,45 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
         LblSuhu = new javax.swing.JLabel();
         LblKelembapan = new javax.swing.JLabel();
         LblKondisi = new javax.swing.JLabel();
-        BtnSimpan = new javax.swing.JButton();
         BtnSimpanData = new javax.swing.JButton();
         BtnMuatData = new javax.swing.JButton();
         lblGambar = new javax.swing.JLabel();
-        panelTabel = new javax.swing.JPanel();
+        BtnSimpan = new javax.swing.JButton();
+        PanelTabel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         TblCuaca = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        PanelJudul.setBackground(new java.awt.Color(51, 102, 255));
+
         LblJudul.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        LblJudul.setForeground(new java.awt.Color(255, 255, 255));
         LblJudul.setText("APLIKASI CEK CUACA");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout PanelJudulLayout = new javax.swing.GroupLayout(PanelJudul);
+        PanelJudul.setLayout(PanelJudulLayout);
+        PanelJudulLayout.setHorizontalGroup(
+            PanelJudulLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelJudulLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(LblJudul)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        PanelJudulLayout.setVerticalGroup(
+            PanelJudulLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelJudulLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(LblJudul)
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        LblCari.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        PanelInfo.setBackground(new java.awt.Color(51, 51, 255));
+        PanelInfo.setForeground(new java.awt.Color(51, 51, 255));
+
+        LblCari.setBackground(new java.awt.Color(255, 255, 255));
+        LblCari.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        LblCari.setForeground(new java.awt.Color(255, 255, 255));
         LblCari.setText("Cari Kota:");
 
         TxtKota.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
@@ -132,20 +147,27 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
             }
         });
 
-        LblCuaca.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        CbxLokasi.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+
+        LblCuaca.setBackground(new java.awt.Color(255, 255, 255));
+        LblCuaca.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        LblCuaca.setForeground(new java.awt.Color(255, 255, 255));
         LblCuaca.setText("Cuaca: ");
 
-        LblSuhu.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        LblSuhu.setBackground(new java.awt.Color(255, 255, 255));
+        LblSuhu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        LblSuhu.setForeground(new java.awt.Color(255, 255, 255));
         LblSuhu.setText("Suhu: [ ]");
 
-        LblKelembapan.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        LblKelembapan.setBackground(new java.awt.Color(255, 255, 255));
+        LblKelembapan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        LblKelembapan.setForeground(new java.awt.Color(255, 255, 255));
         LblKelembapan.setText("Kelembapan: [ ]");
 
-        LblKondisi.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        LblKondisi.setBackground(new java.awt.Color(255, 255, 255));
+        LblKondisi.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        LblKondisi.setForeground(new java.awt.Color(255, 255, 255));
         LblKondisi.setText("Kondisi:");
-
-        BtnSimpan.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
-        BtnSimpan.setText("Simpan");
 
         BtnSimpanData.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
         BtnSimpanData.setText("Simpan Data");
@@ -165,47 +187,54 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
 
         lblGambar.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
 
-        javax.swing.GroupLayout panelInfoLayout = new javax.swing.GroupLayout(panelInfo);
-        panelInfo.setLayout(panelInfoLayout);
-        panelInfoLayout.setHorizontalGroup(
-            panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelInfoLayout.createSequentialGroup()
+        BtnSimpan.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        BtnSimpan.setText("Simpan");
+        BtnSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnSimpanActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout PanelInfoLayout = new javax.swing.GroupLayout(PanelInfo);
+        PanelInfo.setLayout(PanelInfoLayout);
+        PanelInfoLayout.setHorizontalGroup(
+            PanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelInfoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelInfoLayout.createSequentialGroup()
-                        .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoLayout.createSequentialGroup()
-                                .addComponent(CbxLokasi, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BtnSimpan))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(BtnMuatData)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BtnSimpanData))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoLayout.createSequentialGroup()
-                                .addComponent(TxtKota)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(BtnCek, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap())
-                    .addGroup(panelInfoLayout.createSequentialGroup()
-                        .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(PanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PanelInfoLayout.createSequentialGroup()
+                        .addGroup(PanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(LblCari)
                             .addComponent(LblCuaca)
                             .addComponent(LblSuhu)
                             .addComponent(LblKelembapan)
-                            .addGroup(panelInfoLayout.createSequentialGroup()
+                            .addGroup(PanelInfoLayout.createSequentialGroup()
                                 .addComponent(LblKondisi)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblGambar)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(PanelInfoLayout.createSequentialGroup()
+                        .addGroup(PanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInfoLayout.createSequentialGroup()
+                                .addComponent(BtnMuatData)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                                .addComponent(BtnSimpanData))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInfoLayout.createSequentialGroup()
+                                .addComponent(TxtKota)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(BtnCek, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(PanelInfoLayout.createSequentialGroup()
+                                .addComponent(CbxLokasi, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(BtnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addContainerGap())))
         );
-        panelInfoLayout.setVerticalGroup(
-            panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInfoLayout.createSequentialGroup()
+        PanelInfoLayout.setVerticalGroup(
+            PanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelInfoLayout.createSequentialGroup()
                 .addComponent(LblCari)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(PanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TxtKota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BtnCek))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -215,21 +244,24 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(LblKelembapan)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(PanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LblKondisi)
                     .addComponent(lblGambar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BtnSimpan)
-                    .addComponent(CbxLokasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(PanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(CbxLokasi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BtnSimpan))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(PanelInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BtnSimpanData)
                     .addComponent(BtnMuatData))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
-        TblCuaca.setFont(new java.awt.Font("Milky Nice", 0, 14)); // NOI18N
+        PanelTabel.setBackground(new java.awt.Color(51, 51, 255));
+
+        TblCuaca.setBackground(new java.awt.Color(153, 153, 255));
+        TblCuaca.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         TblCuaca.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -248,16 +280,14 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(TblCuaca);
 
-        javax.swing.GroupLayout panelTabelLayout = new javax.swing.GroupLayout(panelTabel);
-        panelTabel.setLayout(panelTabelLayout);
-        panelTabelLayout.setHorizontalGroup(
-            panelTabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelTabelLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+        javax.swing.GroupLayout PanelTabelLayout = new javax.swing.GroupLayout(PanelTabel);
+        PanelTabel.setLayout(PanelTabelLayout);
+        PanelTabelLayout.setHorizontalGroup(
+            PanelTabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
-        panelTabelLayout.setVerticalGroup(
-            panelTabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        PanelTabelLayout.setVerticalGroup(
+            PanelTabelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
@@ -266,20 +296,19 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(panelTabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(PanelJudul, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(PanelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(6, 6, 6)
+                .addComponent(PanelTabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(PanelJudul, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addComponent(panelTabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(PanelInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(PanelTabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -324,6 +353,31 @@ public class CekCuacaSederhanaFrame extends javax.swing.JFrame {
     private void BtnMuatDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnMuatDataActionPerformed
         muatDataDariCSV();
     }//GEN-LAST:event_BtnMuatDataActionPerformed
+
+    private void BtnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnSimpanActionPerformed
+    String kota = TxtKota.getText().trim();
+    if (kota.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Masukkan nama kota terlebih dahulu!");
+        return;
+    }
+
+    // Cek apakah kota sudah ada di daftar
+    boolean sudahAda = false;
+    for (int i = 0; i < CbxLokasi.getItemCount(); i++) {
+        if (CbxLokasi.getItemAt(i).equalsIgnoreCase(kota)) {
+            sudahAda = true;
+            break;
+        }
+            }
+
+    if (!sudahAda) {
+        CbxLokasi.addItem(kota);
+        simpanKotaFavorit();
+        JOptionPane.showMessageDialog(this, kota + " telah ditambahkan ke daftar favorit!");
+    } else {
+        JOptionPane.showMessageDialog(this, kota + " sudah ada di daftar favorit.");
+    }
+    }//GEN-LAST:event_BtnSimpanActionPerformed
     
     private void simpanDataKeCSV() {
     try (PrintWriter writer = new PrintWriter(new File("data_cuaca.csv"))) {
@@ -359,6 +413,40 @@ private void muatDataDariCSV() {
         JOptionPane.showMessageDialog(this, "Gagal memuat: " + e.getMessage());
     }
 }
+// 🔸 Menyimpan daftar kota favorit ke file favorit.txt
+private void simpanKotaFavorit() {
+    try (PrintWriter writer = new PrintWriter(new FileWriter("favorit.txt"))) {
+        for (int i = 0; i < CbxLokasi.getItemCount(); i++) {
+            String kota = CbxLokasi.getItemAt(i);
+            if (!kota.equals("Pilih Kota")) {
+                writer.println(kota);
+            }
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Gagal menyimpan favorit: " + e.getMessage());
+    }
+}
+
+// 🔸 Memuat daftar kota favorit dari file favorit.txt
+private void muatKotaFavorit() {
+    CbxLokasi.removeAllItems();
+    CbxLokasi.addItem("Kota Favorit");
+
+    File file = new File("favorit.txt");
+    if (!file.exists()) return;
+
+    try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            if (!line.trim().isEmpty()) {
+                CbxLokasi.addItem(line.trim());
+            }
+        }
+    } catch (IOException e) {
+        JOptionPane.showMessageDialog(this, "Gagal memuat daftar favorit: " + e.getMessage());
+    }
+}
+
     /**
      * @param args the command line arguments
      */
@@ -406,12 +494,12 @@ private void muatDataDariCSV() {
     private javax.swing.JLabel LblKelembapan;
     private javax.swing.JLabel LblKondisi;
     private javax.swing.JLabel LblSuhu;
+    private javax.swing.JPanel PanelInfo;
+    private javax.swing.JPanel PanelJudul;
+    private javax.swing.JPanel PanelTabel;
     private javax.swing.JTable TblCuaca;
     private javax.swing.JTextField TxtKota;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblGambar;
-    private javax.swing.JPanel panelInfo;
-    private javax.swing.JPanel panelTabel;
     // End of variables declaration//GEN-END:variables
 }
